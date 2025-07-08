@@ -27,5 +27,5 @@ class CocoDataSet:
         imgs = self.instance.loadImgs(img_ids)
         return imgs
     
-    def hello():
+    def hello(self):
         print("hello world")

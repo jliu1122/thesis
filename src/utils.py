@@ -2,6 +2,7 @@ from pycocotools.coco import COCO
 import glob
 import clip
 from tqdm import tqdm
+import numpy as np
 import torch
 from PIL import Image
 import re
@@ -14,18 +15,8 @@ class CocoDataSet:
         self.captions = COCO(captions)
 
     def loadImgsFromCategories(self, cats):
-        """
-        Retrieves the images object based on the category names
-
-        Args:
-          cats (str): List of category names
-        
-        Return:
-          list: A list of image objects.
-        """
         catIDs = self.instance.getCatIds(catNms=cats)
         imgIDs = self.instance.getImgIds(catIds=catIDs)
-
         return self.instance.loadImgs(imgIDs)
     
     def getImgFromCatetoryName(self, cats_name):
@@ -56,7 +47,7 @@ class ClipWrapper:
         self.preprocess = p
         self.device = device
 
-    def generateImageEmbeddings(self, coco, path):
+    def generateImageEmbeddingMap(self, coco, path):
         m = {}
         for img in tqdm(path):
           if not os.path.exists(img):
@@ -71,3 +62,11 @@ class ClipWrapper:
     def loadFaissIndex(self, path):
         i = faiss.read_index(path)
         return i
+    
+    def generateTextsEmbedding(self, texts):
+        tokens = clip.tokenize(texts).to(self.device)
+        with torch.no_grad():
+          embeddings = self.model.encode_text(tokens)
+        embeddings = embeddings / embeddings.norm(dim=-1, keepdim=True)
+        return embeddings.cpu().numpy().astype("float32")
+

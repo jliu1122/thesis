@@ -1,4 +1,5 @@
 from pycocotools.coco import COCO
+import glob
 
 class CocoDataSet:
 
@@ -27,5 +28,9 @@ class CocoDataSet:
         imgs = self.instance.loadImgs(img_ids)
         return imgs
     
-    def hello(self):
-        print("hello world")
+    def getImageBlobs(self, path):
+        return list(glob.glob(path + "/.jpg"))
+
+    def idToFile(self, id):
+        img = self.instance.loadImgs(id)[0]
+        return f"coco/images/val2017/{img['file_name']}"

@@ -8,6 +8,14 @@ from PIL import Image
 import re
 import os
 import faiss
+import random
+
+from transformers.models.swin.modeling_swin import SwinSelfOutput
+
+class Helper:
+    def __init__(self):
+        return
+
 
 class CocoDataSet:
     def __init__(self, captions, instance):
@@ -38,7 +46,19 @@ class CocoDataSet:
         image_id = int(match.group(1)) if match else None
 
         return image_id
-
+    
+    def generateQueries(self, w):
+        queries = set()
+        while(True):
+          k = random.randint(1, 4)
+          q = random.sample(w, k)
+          catIds = self.instance.getCatIds(catNms = q)
+          if len(SwinSelfOutput.instance.getImgIds(catIds = catIds)) < 10:
+            continue
+          queries.add(frozenset(q))
+          if len(queries) == 1000:
+            break
+        return queries
 
 class ClipWrapper:
     def __init__(self, model, device):

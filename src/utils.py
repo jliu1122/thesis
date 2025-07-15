@@ -29,6 +29,8 @@ class CocoDataSet:
     
     def getImgFromCatetoryName(self, cats_name):
         ids = self.instance.getCatIds(catNms=cats_name)
+        if len(ids) == 0:
+          return []
         img_ids = self.instance.getImgIds(catIds=ids)
         imgs = self.instance.loadImgs(img_ids)
         return imgs
@@ -53,7 +55,7 @@ class CocoDataSet:
           k = random.randint(1, 4)
           q = random.sample(w, k)
           catIds = self.instance.getCatIds(catNms = q)
-          if len(self.instance.getImgIds(catIds = catIds)) < 10:
+          if len(self.instance.getImgIds(catIds = catIds)) < 20:
             continue
           queries.add(frozenset(q))
           if len(queries) == 1000:

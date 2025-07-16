@@ -52,7 +52,7 @@ class CocoDataSet:
     def generateQueries(self, w):
         queries = set()
         while(True):
-          k = random.randint(1, 4)
+          k = random.randint(2, 5)
           q = random.sample(w, k)
           catIds = self.instance.getCatIds(catNms = q)
           if len(self.instance.getImgIds(catIds = catIds)) < 15:

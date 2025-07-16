@@ -55,7 +55,7 @@ class CocoDataSet:
           k = random.randint(1, 4)
           q = random.sample(w, k)
           catIds = self.instance.getCatIds(catNms = q)
-          if len(self.instance.getImgIds(catIds = catIds)) < 20:
+          if len(self.instance.getImgIds(catIds = catIds)) < 15:
             continue
           queries.add(frozenset(q))
           if len(queries) == 1000:

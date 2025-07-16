@@ -58,7 +58,7 @@ class CocoDataSet:
           if len(self.instance.getImgIds(catIds = catIds)) < 15:
             continue
           queries.add(frozenset(q))
-          if len(queries) == 1000:
+          if len(queries) == 500:
             break
         return queries
 

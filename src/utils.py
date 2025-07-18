@@ -63,9 +63,8 @@ class CocoDataSet:
         return queries
 
 class ClipWrapper:
-    def __init__(self, model, pretrained, device):
-        m, _, p =  open_clip.create_model_and_transforms(model, pretrained=pretrained)
-        m.to(device)
+    def __init__(self, model, device):
+        m, p =  clip.load(model, device=device)
         self.model = m
         self.preprocess = p
         self.device = device

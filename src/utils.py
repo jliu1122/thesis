@@ -1,7 +1,6 @@
 from pycocotools.coco import COCO
 import glob
 import clip
-import open_clip
 from tqdm import tqdm
 import numpy as np
 import torch

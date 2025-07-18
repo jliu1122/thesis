@@ -1,6 +1,7 @@
 from pycocotools.coco import COCO
 import glob
 import clip
+import open_clip
 from tqdm import tqdm
 import numpy as np
 import torch
@@ -10,7 +11,6 @@ import os
 import faiss
 import random
 
-from transformers.models.swin.modeling_swin import SwinSelfOutput
 
 class Helper:
     def __init__(self):
@@ -63,8 +63,9 @@ class CocoDataSet:
         return queries
 
 class ClipWrapper:
-    def __init__(self, model, device):
-        m, p = clip.load(model, device=device)
+    def __init__(self, model, pretrained, device):
+        m, _, p =  open_clip.create_model_and_transforms(model, pretrained=pretrained)
+        m.to(device)
         self.model = m
         self.preprocess = p
         self.device = device

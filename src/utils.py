@@ -48,16 +48,16 @@ class CocoDataSet:
 
         return image_id
     
-    def generateQueries(self, w):
+    def generateQueries(self, w, minw, maxw, nc, n):
         queries = set()
         while(True):
-          k = random.randint(2, 5)
+          k = random.randint(minw, max2)
           q = random.sample(w, k)
           catIds = self.instance.getCatIds(catNms = q)
-          if len(self.instance.getImgIds(catIds = catIds)) < 15:
+          if len(self.instance.getImgIds(catIds = catIds)) < nc:
             continue
           queries.add(frozenset(q))
-          if len(queries) == 500:
+          if len(queries) == n:
             break
         return queries
 
